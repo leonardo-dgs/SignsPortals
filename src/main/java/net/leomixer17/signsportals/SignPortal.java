@@ -1,11 +1,10 @@
 package net.leomixer17.signsportals;
 
+import net.leomixer17.signsportals.database.DatabaseManager;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-
-import net.leomixer17.signsportals.database.DatabaseManager;
-import net.md_5.bungee.api.ChatColor;
 
 public class SignPortal {
 	
