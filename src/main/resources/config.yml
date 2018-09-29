@@ -1,0 +1,22 @@
+database:
+  backend: sqlite
+  database_name: signsportals
+  table_prefix: sp_
+  mysql:
+    host: localhost
+    port: 3306
+    user: root
+    password: ''
+    useSSL: false
+
+portal_identifier: '[Portal]'
+portal_cost: 5000
+portal_refund: 4000
+sign_lines:
+  '1': '&5&lPortal'
+  '2': '%portal%'
+  '3': '%destination%'
+  '4': '%player_name%'
+world_list_type: blacklist
+world_list:
+- exampleworld
