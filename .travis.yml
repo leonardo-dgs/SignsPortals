@@ -2,3 +2,5 @@ language: java
 cache:
   directories:
   - $HOME/.gradle
+jdk:
+- oraclejdk8
