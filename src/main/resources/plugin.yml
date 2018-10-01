@@ -1,6 +1,6 @@
 name: SignsPortals
 main: net.leomixer17.signsportals.SignsPortals
-version: 1.1.2
+version: @version@
 api-version: 1.13
 author: Leomixer17
 description: Let users create their own portals with signs!

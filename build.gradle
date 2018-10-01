@@ -1,6 +1,9 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 apply plugin: 'java'
 
 group = 'net.leomixer17'
+version = '1.1.2'
 
 sourceCompatibility = 1.8
 
@@ -16,4 +19,14 @@ repositories {
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.13.1-R0.1-SNAPSHOT'
     implementation 'com.github.MilkBowl:VaultAPI:-SNAPSHOT'
+}
+
+processResources {
+    filter ReplaceTokens, tokens: [
+            "version" :System.getenv('SIGNSPORTALS_VERSION') == null ? project.property("version") : System.getenv('SIGNSPORTALS_VERSION')
+    ]
+}
+
+jar {
+    archiveName System.getenv('SIGNSPORTALS_JAR_NAME') == null ? 'SignsPortals.jar' : System.getenv("SIGNSPORTALS_JAR_NAME")
 }
