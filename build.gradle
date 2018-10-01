@@ -23,7 +23,7 @@ dependencies {
 
 processResources {
     filter ReplaceTokens, tokens: [
-            "version" :System.getenv('SIGNSPORTALS_VERSION') == null ? project.property("version") : System.getenv('SIGNSPORTALS_VERSION')
+            "version" : System.getenv('SIGNSPORTALS_VERSION') == null ? project.property("version") : System.getenv('SIGNSPORTALS_VERSION')
     ]
 }
 
