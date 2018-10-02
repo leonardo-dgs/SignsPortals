@@ -5,5 +5,5 @@ With this plugin users of your server can create portals as they want, with econ
 * Java 8
 * Vault
 
-[Dev Builds](https://ci.codemc.org/job/Leomixer17/job/SignsPortals/)
+[Dev Builds](https://ci.codemc.org/job/Leomixer17/job/SignsPortals/)\
 View more informations on the SpigotMC page: https://www.spigotmc.org/resources/signsportals.55287/
