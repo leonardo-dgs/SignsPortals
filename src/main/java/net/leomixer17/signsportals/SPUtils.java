@@ -22,7 +22,7 @@ final class SPUtils {
 		int worldId = SignsPortals.getWorldId(loc.getWorld().getUID());
 		if (worldId == 0)
 		{
-		
+			return null;
 		}
 		return worldId + " " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ();
 	}
