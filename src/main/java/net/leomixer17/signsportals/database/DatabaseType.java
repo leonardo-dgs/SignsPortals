@@ -16,12 +16,12 @@ public enum DatabaseType {
 		this.driver = driver;
 		this.urlFormat = urlFormat;
 	}
-
+	
 	public String getDriver()
 	{
 		return this.driver;
 	}
-
+	
 	public String getUrlFormat()
 	{
 		return this.urlFormat;

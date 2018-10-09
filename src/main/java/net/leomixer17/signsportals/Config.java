@@ -14,14 +14,14 @@ final class Config {
 	static YamlConfiguration loadDefaults(final Configuration conf, final Configuration defconf)
 	{
 		final YamlConfiguration finalconfig = new YamlConfiguration();
-		for(final String s : defconf.getKeys(true))
-			if(conf.get(s) != null)
+		for (final String s : defconf.getKeys(true))
+			if (conf.get(s) != null)
 				finalconfig.set(s, conf.get(s));
 			else
 				finalconfig.set(s, defconf.get(s));
-			
-		for(final String s : conf.getKeys(true))
-			if(finalconfig.get(s) == null) 
+		
+		for (final String s : conf.getKeys(true))
+			if (finalconfig.get(s) == null)
 				finalconfig.set(s, conf.get(s));
 		
 		return finalconfig;

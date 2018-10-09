@@ -20,16 +20,22 @@ public final class Messages {
 	static void loadMessages()
 	{
 		final File f = new File(SignsPortals.getPlugin().getDataFolder(), "messages.yml");
-		if(!f.exists())
-			try {
+		if (!f.exists())
+			try
+			{
 				f.createNewFile();
-			} catch (IOException e) {
+			}
+			catch (IOException e)
+			{
 				e.printStackTrace();
 			}
 		messages = Config.loadDefaults(YamlConfiguration.loadConfiguration(f), YamlConfiguration.loadConfiguration(new InputStreamReader(SignsPortals.getPlugin().getResource("messages.yml"))));
-		try {
+		try
+		{
 			messages.save(f);
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}

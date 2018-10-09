@@ -1,16 +1,17 @@
 package net.leomixer17.signsportals.utils;
 
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-
-import org.bukkit.entity.Player;
 
 public final class PacketLib {
 	
 	public static void sendTitle(final Integer fadeIn, final Integer stay, final Integer fadeOut, final String title, final String subtitle, final Player... players)
 	{
-		try {
+		try
+		{
 			Object e;
 			Object chatTitle;
 			Object chatSubtitle;
@@ -18,22 +19,24 @@ public final class PacketLib {
 			Object titlePacket;
 			Object subtitlePacket;
 			
-			if (title != null) {
+			if (title != null)
+			{
 				// Times packets
 				e = BukkitReflection.nmsClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get((Object) null);
-				chatTitle = BukkitReflection.nmsClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[]{ String.class }).invoke((Object) null, new Object[]{ "{\"text\":\"" + title.replace("\\", "\\\\").replace("\"", "\\\"") + "\"}" });
-				subtitleConstructor = BukkitReflection.nmsClass("PacketPlayOutTitle").getConstructor(new Class[]{ BukkitReflection.nmsClass("PacketPlayOutTitle").getDeclaredClasses()[0], BukkitReflection.nmsClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE });
+				chatTitle = BukkitReflection.nmsClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[]{String.class}).invoke((Object) null, new Object[]{"{\"text\":\"" + title.replace("\\", "\\\\").replace("\"", "\\\"") + "\"}"});
+				subtitleConstructor = BukkitReflection.nmsClass("PacketPlayOutTitle").getConstructor(new Class[]{BukkitReflection.nmsClass("PacketPlayOutTitle").getDeclaredClasses()[0], BukkitReflection.nmsClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE});
 				titlePacket = subtitleConstructor.newInstance(new Object[]{e, chatTitle, fadeIn, stay, fadeOut});
 				BukkitReflection.sendPacket(titlePacket, players);
 				
 				e = BukkitReflection.nmsClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get((Object) null);
-				chatTitle = BukkitReflection.nmsClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[]{ String.class }).invoke((Object) null, new Object[]{ "{\"text\":\"" + title.replace("\\", "\\\\").replace("\"", "\\\"") + "\"}" });
-				subtitleConstructor = BukkitReflection.nmsClass("PacketPlayOutTitle").getConstructor(new Class[]{ BukkitReflection.nmsClass("PacketPlayOutTitle").getDeclaredClasses()[0], BukkitReflection.nmsClass("IChatBaseComponent") });
+				chatTitle = BukkitReflection.nmsClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[]{String.class}).invoke((Object) null, new Object[]{"{\"text\":\"" + title.replace("\\", "\\\\").replace("\"", "\\\"") + "\"}"});
+				subtitleConstructor = BukkitReflection.nmsClass("PacketPlayOutTitle").getConstructor(new Class[]{BukkitReflection.nmsClass("PacketPlayOutTitle").getDeclaredClasses()[0], BukkitReflection.nmsClass("IChatBaseComponent")});
 				titlePacket = subtitleConstructor.newInstance(new Object[]{e, chatTitle});
 				BukkitReflection.sendPacket(titlePacket, players);
 			}
 			
-			if (subtitle != null) {
+			if (subtitle != null)
+			{
 				// Times packets
 				e = BukkitReflection.nmsClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get((Object) null);
 				chatSubtitle = BukkitReflection.nmsClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[]{String.class}).invoke((Object) null, new Object[]{"{\"text\":\"" + title.replace("\\", "\\\\").replace("\"", "\\\"") + "\"}"});
@@ -47,28 +50,34 @@ public final class PacketLib {
 				subtitlePacket = subtitleConstructor.newInstance(new Object[]{e, chatSubtitle, fadeIn, stay, fadeOut});
 				BukkitReflection.sendPacket(subtitlePacket, players);
 			}
-		} catch(SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+		}
+		catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | InstantiationException | InvocationTargetException | NoSuchMethodException e)
+		{
 			e.printStackTrace();
 		}
 	}
 	
 	public static void sendActionBar(final String text, final Player... players)
 	{
-		try {
+		try
+		{
 			Object e;
 			Object chatText;
 			Constructor<?> subtitleConstructor;
 			Object titlePacket;
 			
-			if (text != null) {
+			if (text != null)
+			{
 				e = BukkitReflection.nmsClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("ACTIONBAR").get((Object) null);
 				chatText = BukkitReflection.nmsClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[]{String.class}).invoke((Object) null, new Object[]{"{\"text\":\"" + text.replace("\\", "\\\\").replace("\"", "\\\"") + "\"}"});
 				subtitleConstructor = BukkitReflection.nmsClass("PacketPlayOutTitle").getConstructor(new Class[]{BukkitReflection.nmsClass("PacketPlayOutTitle").getDeclaredClasses()[0], BukkitReflection.nmsClass("IChatBaseComponent")});
-				titlePacket = subtitleConstructor.newInstance(new Object[]{ e, chatText });
+				titlePacket = subtitleConstructor.newInstance(new Object[]{e, chatText});
 				BukkitReflection.sendPacket(titlePacket, players);
 			}
 			
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | InstantiationException | NoSuchFieldException e) {
+		}
+		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | InstantiationException | NoSuchFieldException e)
+		{
 			e.printStackTrace();
 		}
 	}
@@ -90,7 +99,8 @@ public final class PacketLib {
 		if (footer == null)
 			footer = "";
 		
-		try {
+		try
+		{
 			final Object tabHeader = BukkitReflection.nmsClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, "{\"text\":\"" + header + "\"}");
 			final Object tabFooter = BukkitReflection.nmsClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, "{\"text\":\"" + footer + "\"}");
 			final Constructor<?> titleConstructor = BukkitReflection.nmsClass("PacketPlayOutPlayerListHeaderFooter").getConstructor(BukkitReflection.nmsClass("IChatBaseComponent"));
@@ -99,7 +109,9 @@ public final class PacketLib {
 			field.setAccessible(true);
 			field.set(packet, tabFooter);
 			BukkitReflection.sendPacket(packet, players);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | NoSuchFieldException e) {
+		}
+		catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | NoSuchFieldException e)
+		{
 			e.printStackTrace();
 		}
 	}
@@ -107,10 +119,13 @@ public final class PacketLib {
 	public static int getPlayerPing(final Player player)
 	{
 		int ping = 0;
-		try {
+		try
+		{
 			final Object craftPlayer = BukkitReflection.getHandle(player);
 			ping = (int) BukkitReflection.getField(craftPlayer.getClass(), "ping").get(craftPlayer);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+		}
+		catch (IllegalArgumentException | IllegalAccessException e)
+		{
 			e.printStackTrace();
 		}
 		return ping;

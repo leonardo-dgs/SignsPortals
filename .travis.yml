@@ -7,6 +7,4 @@ cache:
 jdk:
 - oraclejdk8
 notifications:
-  slack:
-    on_success: never
-    on_failure: never
+  email: false

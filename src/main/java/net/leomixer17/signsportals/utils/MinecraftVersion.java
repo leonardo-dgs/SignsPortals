@@ -35,9 +35,12 @@ public enum MinecraftVersion {
 	{
 		if (version != null)
 			return version;
-		try {
+		try
+		{
 			version = MinecraftVersion.valueOf(getVersionString().replace("v", "MC"));
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e)
+		{
 			version = MinecraftVersion.Unknown;
 		}
 		return version;
@@ -52,10 +55,13 @@ public enum MinecraftVersion {
 	{
 		if (hasGsonSupport != null)
 			return hasGsonSupport;
-		try {
+		try
+		{
 			Class.forName("com.google.gson.Gson");
 			hasGsonSupport = true;
-		} catch (ClassNotFoundException e) {
+		}
+		catch (ClassNotFoundException e)
+		{
 			hasGsonSupport = false;
 		}
 		return hasGsonSupport;

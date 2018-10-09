@@ -20,8 +20,9 @@ final class SPUtils {
 	static final String serializeLocation(final Location loc)
 	{
 		int worldId = SignsPortals.getWorldId(loc.getWorld().getUID());
-		if(worldId == 0) {
-
+		if (worldId == 0)
+		{
+		
 		}
 		return worldId + " " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ();
 	}

@@ -24,10 +24,10 @@ dependencies {
 
 processResources {
     filter ReplaceTokens, tokens: [
-            "version" : System.getenv('SIGNSPORTALS_VERSION') == null ? project.property("version") : System.getenv('SIGNSPORTALS_VERSION')
+            "version": project.property("version")
     ]
 }
 
 jar {
-    archiveName System.getenv('SIGNSPORTALS_JAR_NAME') == null ? 'SignsPortals.jar' : System.getenv("SIGNSPORTALS_JAR_NAME")
+    archiveName 'SignsPortals.jar'
 }
