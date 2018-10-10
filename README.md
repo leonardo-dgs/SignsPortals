@@ -2,7 +2,6 @@
 With this plugin users of your server can create portals as they want, with economy support.
 
 ## Requirements
-* Java 8
 * Vault
 
 ## Dev Builds
