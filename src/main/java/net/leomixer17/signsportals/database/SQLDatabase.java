@@ -7,18 +7,18 @@ import java.net.URL;
 import java.sql.*;
 
 public class SQLDatabase {
-    
+
     private DatabaseType type;
     private String url;
     private final DatabaseConnectionSettings settings;
     private Connection connection;
-    
+
     public SQLDatabase(final DatabaseType type, final DatabaseConnectionSettings settings)
     {
         this.settings = settings;
         this.setType(type);
     }
-    
+
     public void connect()
     {
         try
@@ -32,11 +32,11 @@ public class SQLDatabase {
                     if (!dbFile.exists())
                         dbFile.createNewFile();
                     break;
-                
+
                 default:
                     break;
             }
-            
+
             this.connection =
                     DriverManager.getConnection(this.getConnectionUrl(), this.getSettings().getUser(), this.getSettings().getPassword());
         }
@@ -45,7 +45,7 @@ public class SQLDatabase {
             e.printStackTrace();
         }
     }
-    
+
     public void disconnect()
     {
         if (this.connection != null)
@@ -58,49 +58,49 @@ public class SQLDatabase {
                 e.printStackTrace();
             }
     }
-    
+
     public Connection getConnection()
     {
         return this.connection;
     }
-    
+
     public void setConnection(final Connection connection)
     {
         this.connection = connection;
     }
-    
+
     public boolean isConnected() throws SQLException
     {
         return this.connection != null && this.connection.isValid(0);
     }
-    
+
     public DatabaseConnectionSettings getSettings()
     {
         return this.settings;
     }
-    
+
     public String getConnectionUrl()
     {
         return this.url;
     }
-    
+
     private void refreshConnectionUrl()
     {
         this.url = this.type.getUrlFormat().replace("%host%", this.getSettings().getHost()).replace("%port%", String.valueOf(this.getSettings().getPort()))
                 .replace("%database%", this.getSettings().getDatabase()).replace("%properties%", this.getSettings().getPropertiesString());
     }
-    
+
     public DatabaseType getType()
     {
         return this.type;
     }
-    
+
     public void setType(final DatabaseType type)
     {
         this.type = type;
         this.refreshConnectionUrl();
     }
-    
+
     public void update(final String sql, final Object... variables)
     {
         try
@@ -116,7 +116,7 @@ public class SQLDatabase {
             e.printStackTrace();
         }
     }
-    
+
     public ResultSet query(final String sql, final Object... variables)
     {
         try
@@ -132,7 +132,7 @@ public class SQLDatabase {
         }
         return null;
     }
-    
+
     public PreparedStatement prepareStatement(final String sql, final Object... variables)
     {
         try
@@ -149,7 +149,7 @@ public class SQLDatabase {
         }
         return null;
     }
-    
+
     private static void setVariables(final PreparedStatement stmt, final Object... variables) throws SQLException
     {
         for (int i = 1; i < variables.length + 1; i++)
@@ -159,7 +159,7 @@ public class SQLDatabase {
                 stmt.setNull(i, getSQLType(var));
             switch (getSQLType(var))
             {
-                
+
                 case Types.LONGVARCHAR:
                 case Types.VARCHAR:
                     stmt.setString(i, (String) var);
@@ -226,13 +226,13 @@ public class SQLDatabase {
                 case Types.DATALINK:
                     stmt.setURL(i, (URL) var);
                     break;
-                
+
                 default:
                     stmt.setObject(i, var);
             }
         }
     }
-    
+
     private static int getSQLType(final Object var)
     {
         if (var instanceof String)
@@ -277,8 +277,8 @@ public class SQLDatabase {
             return Types.SQLXML;
         if (var instanceof URL)
             return Types.DATALINK;
-        
+
         return Types.OTHER;
     }
-    
+
 }

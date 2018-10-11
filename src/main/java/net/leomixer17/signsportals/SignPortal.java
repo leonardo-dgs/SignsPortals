@@ -7,12 +7,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
 public class SignPortal {
-    
+
     private Block block;
     private String name;
     private String destination;
     private OfflinePlayer owner;
-    
+
     public SignPortal(final Block block, final OfflinePlayer owner, final String name, final String destination)
     {
         this.setBlock(block);
@@ -20,53 +20,53 @@ public class SignPortal {
         this.setName(name);
         this.setDestination(destination);
     }
-    
+
     public Block getBlock()
     {
         return this.block;
     }
-    
+
     public void setBlock(final Block block)
     {
         this.block = block;
     }
-    
+
     public String getName()
     {
         return name;
     }
-    
+
     public void setName(final String name)
     {
         this.name = name;
     }
-    
+
     public String getDestination()
     {
         return this.destination;
     }
-    
+
     public void setDestination(final String destination)
     {
         this.destination = destination;
     }
-    
+
     public OfflinePlayer getOwner()
     {
         return owner;
     }
-    
+
     public void setOwner(final OfflinePlayer owner)
     {
         this.owner = owner;
     }
-    
+
     public void save()
     {
         SignsPortals.getDatabaseManager().update(DatabaseManager.INSERT_PORTAL, SPUtils.serializeLocation(this.getBlock().getLocation()),
                 SignsPortals.getPlayerId(this.getOwner().getUniqueId()), this.getName(), this.getDestination());
     }
-    
+
     public void update()
     {
         final String line1 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getPlugin().getConfig().getString("sign_lines.1"))
@@ -84,7 +84,7 @@ public class SignPortal {
         sign.setLine(3, line4);
         sign.update();
     }
-    
+
     public void delete()
     {
         SignsPortals.getDatabaseManager().update(DatabaseManager.DELETE_PORTAL, SPUtils.serializeLocation(this.getBlock().getLocation()));
@@ -98,7 +98,7 @@ public class SignPortal {
                 );
         }
     }
-    
+
     @Override
     public boolean equals(final Object obj)
     {
@@ -106,5 +106,5 @@ public class SignPortal {
             return false;
         return this.getBlock().getLocation().equals(((SignPortal) obj).getBlock().getLocation());
     }
-    
+
 }

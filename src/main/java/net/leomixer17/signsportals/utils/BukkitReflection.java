@@ -7,7 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public final class BukkitReflection {
-    
+
     public static Object newFromNMS(final String nms)
     {
         try
@@ -19,7 +19,7 @@ public final class BukkitReflection {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static Object newFromOBC(final String obc)
     {
         try
@@ -31,7 +31,7 @@ public final class BukkitReflection {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static Class<?> nmsClass(final String nms)
     {
         try
@@ -43,7 +43,7 @@ public final class BukkitReflection {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static Class<?> obcClass(final String obc)
     {
         try
@@ -55,7 +55,7 @@ public final class BukkitReflection {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static Object getHandle(final Object obj)
     {
         try
@@ -68,7 +68,7 @@ public final class BukkitReflection {
         }
         return null;
     }
-    
+
     public static Field getField(final Class<?> clazz, final String name)
     {
         try
@@ -83,7 +83,7 @@ public final class BukkitReflection {
         }
         return null;
     }
-    
+
     public static Method getMethod(final Class<?> clazz, final String name, final Class<?>[] args)
     {
         for (Method m : clazz.getMethods())
@@ -96,7 +96,7 @@ public final class BukkitReflection {
         }
         return null;
     }
-    
+
     public static boolean classesEqual(final Class<?>[] l1, final Class<?>[] l2)
     {
         boolean equal = true;
@@ -112,7 +112,7 @@ public final class BukkitReflection {
         }
         return equal;
     }
-    
+
     public static void sendPacket(final Object packet, final Player... players)
     {
         try
@@ -131,7 +131,7 @@ public final class BukkitReflection {
             e.printStackTrace();
         }
     }
-    
+
     public static Class<?> getCaller()
     {
         try
@@ -143,5 +143,5 @@ public final class BukkitReflection {
         }
         return null;
     }
-    
+
 }

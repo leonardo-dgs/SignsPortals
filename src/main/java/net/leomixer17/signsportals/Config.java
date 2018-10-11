@@ -4,13 +4,13 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 final class Config {
-    
+
     static void loadAll()
     {
         SignsPortals.getPlugin().saveDefaultConfig();
         Messages.loadMessages();
     }
-    
+
     static YamlConfiguration loadDefaults(final Configuration conf, final Configuration defconf)
     {
         final YamlConfiguration finalconfig = new YamlConfiguration();
@@ -19,12 +19,12 @@ final class Config {
                 finalconfig.set(s, conf.get(s));
             else
                 finalconfig.set(s, defconf.get(s));
-        
+
         for (final String s : conf.getKeys(true))
             if (finalconfig.get(s) == null)
                 finalconfig.set(s, conf.get(s));
-        
+
         return finalconfig;
     }
-    
+
 }

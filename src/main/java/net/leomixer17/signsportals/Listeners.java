@@ -20,7 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public final class Listeners implements Listener {
-    
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onSignChange(final SignChangeEvent e)
     {
@@ -65,7 +65,7 @@ public final class Listeners implements Listener {
             return;
         }
         final SignPortal portal = new SignPortal(e.getBlock(), e.getPlayer(), e.getLine(1), e.getLine(2));
-        
+
         final String line1 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getPlugin().getConfig().getString("sign_lines.1"))
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
         final String line2 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getPlugin().getConfig().getString("sign_lines.2"))
@@ -74,18 +74,18 @@ public final class Listeners implements Listener {
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
         final String line4 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getPlugin().getConfig().getString("sign_lines.4"))
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
-        
+
         e.setLine(0, line1);
         e.setLine(1, line2);
         e.setLine(2, line3);
         e.setLine(3, line4);
-        
+
         portal.save();
         final double cost = SignsPortals.getPlugin().getConfig().getDouble("portal_cost");
         SignsPortals.getEconomy().withdrawPlayer(e.getPlayer(), cost);
         e.getPlayer().sendMessage(Messages.getMsg("portal_created").replace("%money%", SignsPortals.getEconomy().format(cost)));
     }
-    
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(final BlockBreakEvent e)
     {
@@ -94,7 +94,7 @@ public final class Listeners implements Listener {
         final SignPortal portal = SignsPortals.getPortal(e.getBlock());
         portal.delete();
     }
-    
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPhysics(final BlockPhysicsEvent e)
     {
@@ -112,7 +112,7 @@ public final class Listeners implements Listener {
             }
         });
     }
-    
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PlayerJoinEvent event)
     {
@@ -130,7 +130,7 @@ public final class Listeners implements Listener {
         }
         SignsPortals.getPortals(event.getPlayer()).forEach(portal -> portal.update());
     }
-    
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onSignInteract(final PlayerInteractEvent e)
     {
@@ -167,7 +167,7 @@ public final class Listeners implements Listener {
         e.getPlayer().teleport(SPUtils.getRoundedLocation(location));
         PacketLib.sendActionBar(Messages.getMsg("teleport_success").replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination()), e.getPlayer());
     }
-    
+
     private static boolean isEmptyOrWhitespaceOnly(final String s)
     {
         return s.replace(" ", "").isEmpty();

@@ -21,18 +21,18 @@ import java.util.*;
 import java.util.logging.Level;
 
 public final class SignsPortals extends JavaPlugin {
-    
+
     private static SignsPortals plugin;
     private static DatabaseManager database;
     private static Economy economy;
-    
+
     @Override
     public void onEnable()
     {
         plugin = this;
         if (!this.setupEconomy())
         {
-            this.getLogger().log(Level.SEVERE, "�cThis plugin requires a Vault economy plugin. Disabling...");
+            this.getLogger().log(Level.SEVERE, "§cThis plugin requires a Vault economy plugin. Disabling...");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -40,28 +40,28 @@ public final class SignsPortals extends JavaPlugin {
         this.setupDatabase();
         Bukkit.getPluginManager().registerEvents(new Listeners(), this);
     }
-    
+
     @Override
     public void onDisable()
     {
         database.disconnect();
     }
-    
+
     public static SignsPortals getPlugin()
     {
         return plugin;
     }
-    
+
     static SQLDatabase getDatabaseManager()
     {
         return database;
     }
-    
+
     static final Economy getEconomy()
     {
         return economy;
     }
-    
+
     private boolean setupEconomy()
     {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
@@ -69,7 +69,7 @@ public final class SignsPortals extends JavaPlugin {
             economy = economyProvider.getProvider();
         return (economy != null);
     }
-    
+
     private void setupDatabase()
     {
         DatabaseType type;
@@ -101,7 +101,7 @@ public final class SignsPortals extends JavaPlugin {
         database = new DatabaseManager(type, settings);
         database.initialise();
     }
-    
+
     public static SignPortal getPortal(final Block block)
     {
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_PORTAL_FROM_BLOCK, SPUtils.serializeLocation(block.getLocation()));
@@ -122,7 +122,7 @@ public final class SignsPortals extends JavaPlugin {
         }
         return null;
     }
-    
+
     public static SignPortal getPortal(final OfflinePlayer owner, final String name)
     {
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_PORTAL_FROM_OWNER_AND_NAME, getPlayerId(owner), name);
@@ -145,7 +145,7 @@ public final class SignsPortals extends JavaPlugin {
         }
         return null;
     }
-    
+
     public static Set<SignPortal> getPortals(final OfflinePlayer player)
     {
         final Set<SignPortal> portals = new HashSet<>();
@@ -171,14 +171,14 @@ public final class SignsPortals extends JavaPlugin {
         }
         return portals;
     }
-    
+
     public static boolean isPortal(final Block block)
     {
         if (!(block.getState() instanceof Sign))
             return false;
         return getPortal(block) != null;
     }
-    
+
     public static int getWorldId(final UUID uid)
     {
         int id = 0;
@@ -200,12 +200,12 @@ public final class SignsPortals extends JavaPlugin {
         }
         return id;
     }
-    
+
     public static int getPlayerId(final OfflinePlayer player)
     {
         return getPlayerId(player.getUniqueId());
     }
-    
+
     public static int getPlayerId(final UUID uuid)
     {
         int id = 0;
@@ -227,7 +227,7 @@ public final class SignsPortals extends JavaPlugin {
         }
         return id;
     }
-    
+
     public static int getPlayerId(final String username)
     {
         int id = 0;
@@ -244,7 +244,7 @@ public final class SignsPortals extends JavaPlugin {
         }
         return id;
     }
-    
+
     public static World getWorld(final int id)
     {
         UUID uid = null;
@@ -261,7 +261,7 @@ public final class SignsPortals extends JavaPlugin {
         }
         return uid == null ? null : Bukkit.getWorld(uid);
     }
-    
+
     public static UUID getPlayerUUID(final int id)
     {
         UUID uuid = null;
@@ -278,7 +278,7 @@ public final class SignsPortals extends JavaPlugin {
         }
         return uuid;
     }
-    
+
     public static String getPlayerName(final int id)
     {
         String username = null;
@@ -295,7 +295,7 @@ public final class SignsPortals extends JavaPlugin {
         }
         return username;
     }
-    
+
     public static OfflinePlayer getPlayer(final int id)
     {
         final UUID uuid = getPlayerUUID(id);
