@@ -1,7 +1,7 @@
 package net.leomixer17.signsportals;
 
+import net.leomixer17.pluginlib.util.Players;
 import net.leomixer17.signsportals.database.DatabaseManager;
-import net.leomixer17.signsportals.utils.PacketLib;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -165,7 +165,7 @@ public final class Listeners implements Listener {
         location.setYaw(e.getPlayer().getLocation().getYaw());
         location.setPitch(e.getPlayer().getLocation().getPitch());
         e.getPlayer().teleport(SPUtils.getRoundedLocation(location));
-        PacketLib.sendActionBar(Messages.getMsg("teleport_success").replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination()), e.getPlayer());
+        Players.sendActionBar(Messages.getMsg("teleport_success").replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination()), e.getPlayer());
     }
 
     private static boolean isEmptyOrWhitespaceOnly(final String s)
