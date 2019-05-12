@@ -13,7 +13,7 @@ public class SignPortal {
     private String destination;
     private OfflinePlayer owner;
 
-    public SignPortal(final Block block, final OfflinePlayer owner, final String name, final String destination)
+    public SignPortal(Block block, OfflinePlayer owner, String name, String destination)
     {
         this.setBlock(block);
         this.setOwner(owner);
@@ -26,7 +26,7 @@ public class SignPortal {
         return this.block;
     }
 
-    public void setBlock(final Block block)
+    public void setBlock(Block block)
     {
         this.block = block;
     }
@@ -36,7 +36,7 @@ public class SignPortal {
         return name;
     }
 
-    public void setName(final String name)
+    public void setName(String name)
     {
         this.name = name;
     }
@@ -46,7 +46,7 @@ public class SignPortal {
         return this.destination;
     }
 
-    public void setDestination(final String destination)
+    public void setDestination(String destination)
     {
         this.destination = destination;
     }
@@ -56,7 +56,7 @@ public class SignPortal {
         return owner;
     }
 
-    public void setOwner(final OfflinePlayer owner)
+    public void setOwner(OfflinePlayer owner)
     {
         this.owner = owner;
     }
@@ -100,7 +100,7 @@ public class SignPortal {
     }
 
     @Override
-    public boolean equals(final Object obj)
+    public boolean equals(Object obj)
     {
         if (!(obj instanceof SignPortal))
             return false;

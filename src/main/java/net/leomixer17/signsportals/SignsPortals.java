@@ -57,7 +57,7 @@ public final class SignsPortals extends JavaPlugin {
         return database;
     }
 
-    static final Economy getEconomy()
+    static Economy getEconomy()
     {
         return economy;
     }
@@ -102,7 +102,7 @@ public final class SignsPortals extends JavaPlugin {
         database.initialise();
     }
 
-    public static SignPortal getPortal(final Block block)
+    public static SignPortal getPortal(Block block)
     {
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_PORTAL_FROM_BLOCK, SPUtils.serializeLocation(block.getLocation()));
         try
@@ -123,7 +123,7 @@ public final class SignsPortals extends JavaPlugin {
         return null;
     }
 
-    public static SignPortal getPortal(final OfflinePlayer owner, final String name)
+    public static SignPortal getPortal(OfflinePlayer owner, String name)
     {
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_PORTAL_FROM_OWNER_AND_NAME, getPlayerId(owner), name);
         try
@@ -146,7 +146,7 @@ public final class SignsPortals extends JavaPlugin {
         return null;
     }
 
-    public static Set<SignPortal> getPortals(final OfflinePlayer player)
+    public static Set<SignPortal> getPortals(OfflinePlayer player)
     {
         final Set<SignPortal> portals = new HashSet<>();
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_PLAYER_PORTALS, getPlayerId(player));
@@ -172,14 +172,14 @@ public final class SignsPortals extends JavaPlugin {
         return portals;
     }
 
-    public static boolean isPortal(final Block block)
+    public static boolean isPortal(Block block)
     {
         if (!(block.getState() instanceof Sign))
             return false;
         return getPortal(block) != null;
     }
 
-    public static int getWorldId(final UUID uid)
+    public static int getWorldId(UUID uid)
     {
         int id = 0;
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_WORLD_ID_FROM_UID, uid.toString());
@@ -201,12 +201,12 @@ public final class SignsPortals extends JavaPlugin {
         return id;
     }
 
-    public static int getPlayerId(final OfflinePlayer player)
+    public static int getPlayerId(OfflinePlayer player)
     {
         return getPlayerId(player.getUniqueId());
     }
 
-    public static int getPlayerId(final UUID uuid)
+    public static int getPlayerId(UUID uuid)
     {
         int id = 0;
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_PLAYER_ID_FROM_UUID, uuid.toString());
@@ -228,7 +228,7 @@ public final class SignsPortals extends JavaPlugin {
         return id;
     }
 
-    public static int getPlayerId(final String username)
+    public static int getPlayerId(String username)
     {
         int id = 0;
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_PLAYER_ID_FROM_USERNAME, username);
@@ -245,7 +245,7 @@ public final class SignsPortals extends JavaPlugin {
         return id;
     }
 
-    public static World getWorld(final int id)
+    public static World getWorld(int id)
     {
         UUID uid = null;
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_WORLD_UID, id);
@@ -262,7 +262,7 @@ public final class SignsPortals extends JavaPlugin {
         return uid == null ? null : Bukkit.getWorld(uid);
     }
 
-    public static UUID getPlayerUUID(final int id)
+    public static UUID getPlayerUUID(int id)
     {
         UUID uuid = null;
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_PLAYER_UUID, id);
@@ -279,7 +279,7 @@ public final class SignsPortals extends JavaPlugin {
         return uuid;
     }
 
-    public static String getPlayerName(final int id)
+    public static String getPlayerName(int id)
     {
         String username = null;
         final ResultSet rs = getDatabaseManager().query(DatabaseManager.GET_PLAYER_USERNAME, id);
@@ -296,7 +296,7 @@ public final class SignsPortals extends JavaPlugin {
         return username;
     }
 
-    public static OfflinePlayer getPlayer(final int id)
+    public static OfflinePlayer getPlayer(int id)
     {
         final UUID uuid = getPlayerUUID(id);
         return uuid == null ? null : Bukkit.getOfflinePlayer(uuid);

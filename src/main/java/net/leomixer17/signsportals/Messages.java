@@ -12,7 +12,7 @@ public final class Messages {
 
     private static FileConfiguration messages;
 
-    static String getMsg(final String key)
+    static String getMsg(String key)
     {
         return (!key.equals("prefix") ? getMsg("prefix") : "") + ChatColor.translateAlternateColorCodes('&', messages.getString(key));
     }

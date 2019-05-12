@@ -51,7 +51,7 @@ public final class DatabaseManager extends SQLDatabase {
     public static final String GET_PLAYER_PORTALS =
             "SELECT `location`, `name`, `destination` FROM `${table_prefix}portals` WHERE `owner` = ?";
 
-    public DatabaseManager(final DatabaseType type, final DatabaseConnectionSettings settings)
+    public DatabaseManager(DatabaseType type, DatabaseConnectionSettings settings)
     {
         super(type, settings);
     }
@@ -83,7 +83,7 @@ public final class DatabaseManager extends SQLDatabase {
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, final Object... variables)
+    public PreparedStatement prepareStatement(String sql, Object... variables)
     {
         return super.prepareStatement(sql.replaceFirst("\\$\\{table_prefix\\}", SignsPortals.getPlugin().getConfig().getString("database.table_prefix")), variables);
     }

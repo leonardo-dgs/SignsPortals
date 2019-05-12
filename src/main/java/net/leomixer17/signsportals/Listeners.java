@@ -22,7 +22,7 @@ import java.sql.SQLException;
 public final class Listeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onSignChange(final SignChangeEvent e)
+    public void onSignChange(SignChangeEvent e)
     {
         if (!e.getLine(0).equals(SignsPortals.getPlugin().getConfig().getString("portal_identifier")))
             return;
@@ -87,7 +87,7 @@ public final class Listeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockBreak(final BlockBreakEvent e)
+    public void onBlockBreak(BlockBreakEvent e)
     {
         if (!SignsPortals.isPortal(e.getBlock()))
             return;
@@ -96,7 +96,7 @@ public final class Listeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockPhysics(final BlockPhysicsEvent e)
+    public void onBlockPhysics(BlockPhysicsEvent e)
     {
         if (!SignsPortals.isPortal(e.getBlock()))
             return;
@@ -114,7 +114,7 @@ public final class Listeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerJoin(final PlayerJoinEvent event)
+    public void onPlayerJoin(PlayerJoinEvent event)
     {
         final ResultSet rs = SignsPortals.getDatabaseManager().query(DatabaseManager.GET_PLAYER_USERNAME_FROM_UUID, event.getPlayer().getUniqueId().toString());
         try
@@ -132,7 +132,7 @@ public final class Listeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onSignInteract(final PlayerInteractEvent e)
+    public void onSignInteract(PlayerInteractEvent e)
     {
         if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
             return;
@@ -168,7 +168,7 @@ public final class Listeners implements Listener {
         Players.sendActionBar(Messages.getMsg("teleport_success").replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination()), e.getPlayer());
     }
 
-    private static boolean isEmptyOrWhitespaceOnly(final String s)
+    private static boolean isEmptyOrWhitespaceOnly(String s)
     {
         return s.replace(" ", "").isEmpty();
     }
