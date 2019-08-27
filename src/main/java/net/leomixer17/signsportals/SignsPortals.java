@@ -5,6 +5,7 @@ import net.leomixer17.signsportals.database.DatabaseManager;
 import net.leomixer17.signsportals.database.DatabaseType;
 import net.leomixer17.signsportals.database.SQLDatabase;
 import net.milkbowl.vault.economy.Economy;
+import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -39,6 +40,7 @@ public final class SignsPortals extends JavaPlugin {
         Config.loadAll();
         this.setupDatabase();
         Bukkit.getPluginManager().registerEvents(new Listeners(), this);
+        new MetricsLite(this);
     }
 
     @Override
