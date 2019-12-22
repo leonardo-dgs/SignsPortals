@@ -1,9 +1,9 @@
-package net.leomixer17.signsportals;
+package net.leonardo_dgs.signsportals;
 
-import net.leomixer17.signsportals.database.DatabaseConnectionSettings;
-import net.leomixer17.signsportals.database.DatabaseManager;
-import net.leomixer17.signsportals.database.DatabaseType;
-import net.leomixer17.signsportals.database.SQLDatabase;
+import lombok.Getter;
+import net.leonardo_dgs.signsportals.database.DatabaseConnectionSettings;
+import net.leonardo_dgs.signsportals.database.DatabaseManager;
+import net.leonardo_dgs.signsportals.database.DatabaseType;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
@@ -23,14 +23,17 @@ import java.util.logging.Level;
 
 public final class SignsPortals extends JavaPlugin {
 
-    private static SignsPortals plugin;
-    private static DatabaseManager database;
+    @Getter
+    private static SignsPortals instance;
+    @Getter
+    private static DatabaseManager databaseManager;
+    @Getter
     private static Economy economy;
 
     @Override
     public void onEnable()
     {
-        plugin = this;
+        instance = this;
         if (!this.setupEconomy())
         {
             this.getLogger().log(Level.SEVERE, "§cThis plugin requires a Vault economy plugin. Disabling...");
@@ -46,22 +49,7 @@ public final class SignsPortals extends JavaPlugin {
     @Override
     public void onDisable()
     {
-        database.disconnect();
-    }
-
-    public static SignsPortals getPlugin()
-    {
-        return plugin;
-    }
-
-    static SQLDatabase getDatabaseManager()
-    {
-        return database;
-    }
-
-    static Economy getEconomy()
-    {
-        return economy;
+        databaseManager.disconnect();
     }
 
     private boolean setupEconomy()
@@ -100,8 +88,8 @@ public final class SignsPortals extends JavaPlugin {
         }
         settings.setDatabase(databaseName);
         settings.setProperties(properties);
-        database = new DatabaseManager(type, settings);
-        database.initialise();
+        databaseManager = new DatabaseManager(type, settings);
+        databaseManager.initialise();
     }
 
     public static SignPortal getPortal(Block block)

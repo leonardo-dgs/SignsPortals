@@ -1,4 +1,4 @@
-package net.leomixer17.signsportals.database;
+package net.leonardo_dgs.signsportals.database;
 
 import java.io.File;
 import java.io.IOException;

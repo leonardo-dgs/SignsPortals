@@ -1,6 +1,6 @@
-package net.leomixer17.signsportals.database;
+package net.leonardo_dgs.signsportals.database;
 
-import net.leomixer17.signsportals.SignsPortals;
+import net.leonardo_dgs.signsportals.SignsPortals;
 
 import java.sql.PreparedStatement;
 
@@ -85,7 +85,7 @@ public final class DatabaseManager extends SQLDatabase {
     @Override
     public PreparedStatement prepareStatement(String sql, Object... variables)
     {
-        return super.prepareStatement(sql.replaceFirst("\\$\\{table_prefix\\}", SignsPortals.getPlugin().getConfig().getString("database.table_prefix")), variables);
+        return super.prepareStatement(sql.replaceFirst("\\$\\{table_prefix\\}", SignsPortals.getInstance().getConfig().getString("database.table_prefix")), variables);
     }
 
 }

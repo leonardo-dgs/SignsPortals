@@ -1,9 +1,14 @@
-package net.leomixer17.signsportals.database;
+package net.leonardo_dgs.signsportals.database;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DatabaseConnectionSettings {
+@Getter
+@Setter
+public final class DatabaseConnectionSettings {
 
     private String host;
     private int port;
@@ -29,66 +34,6 @@ public class DatabaseConnectionSettings {
         this.database = database;
         this.user = user;
         this.password = password;
-        this.properties = properties;
-    }
-
-    public String getHost()
-    {
-        return host;
-    }
-
-    public void setHost(String host)
-    {
-        this.host = host;
-    }
-
-    public int getPort()
-    {
-        return this.port;
-    }
-
-    public void setPort(int port)
-    {
-        this.port = port;
-    }
-
-    public String getDatabase()
-    {
-        return database;
-    }
-
-    public void setDatabase(String database)
-    {
-        this.database = database;
-    }
-
-    public String getUser()
-    {
-        return this.user;
-    }
-
-    public void setUser(String user)
-    {
-        this.user = user;
-    }
-
-    public String getPassword()
-    {
-        return password;
-    }
-
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
-
-    public Map<String, String> getProperties()
-    {
-        return this.properties;
-    }
-
-    public void setProperties(Map<String, String> properties)
-    {
         this.properties = properties;
     }
 

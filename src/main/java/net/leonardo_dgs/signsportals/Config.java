@@ -1,4 +1,4 @@
-package net.leomixer17.signsportals;
+package net.leonardo_dgs.signsportals;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -7,7 +7,7 @@ final class Config {
 
     static void loadAll()
     {
-        SignsPortals.getPlugin().saveDefaultConfig();
+        SignsPortals.getInstance().saveDefaultConfig();
         Messages.loadMessages();
     }
 

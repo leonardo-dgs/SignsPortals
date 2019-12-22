@@ -2,21 +2,31 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
-group = 'net.leomixer17'
+group = 'net.leonardo_dgs'
 version = '1.1.5'
 description = 'Let users create their own portals with signs!'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+String mainPackage = project.group + '.' + project.name.toLowerCase()
+String apiVersion = '1.13'
+String author = 'Leonardo_DGS'
+String website = 'https://www.spigotmc.org/resources/signsportals.55287/'
 
+String spigotVersion = '1.15.1-R0.1-SNAPSHOT'
+String bungeeVersion = '1.15-SNAPSHOT'
+String vaultVersion = '1.7'
+String lombokVersion = '1.18.10'
+String bStatsVersion = '1.5'
+String helperVersion = '5.6.0'
+
+tasks.compileJava.sourceCompatibility = 1.8
+tasks.compileJava.targetCompatibility = 1.8
 tasks.compileJava.options.encoding = 'UTF-8'
 
 repositories {
     jcenter()
-    mavenCentral()
 
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots/' }
@@ -25,27 +35,34 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
-    compileOnly 'net.md-5:bungeecord-chat:1.14-SNAPSHOT'
-    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
-    compile 'org.bstats:bstats-bukkit-lite:1.5'
-    compile 'com.github.Leomixer17.PluginLib:bukkit:-SNAPSHOT'
+    shadow 'org.spigotmc:spigot-api:' + spigotVersion
+    shadow 'net.md-5:bungeecord-chat:' + bungeeVersion
+    shadow 'com.github.MilkBowl:VaultAPI:' + vaultVersion
+    shadow 'org.projectlombok:lombok:' + lombokVersion
+    annotationProcessor 'org.projectlombok:lombok:' + lombokVersion
+    implementation 'org.bstats:bstats-bukkit-lite:' + bStatsVersion
+    implementation 'me.lucko:helper:' + helperVersion
 }
 
 tasks.processResources {
     filter ReplaceTokens, tokens: [
-            "version"    : project.property("version"),
-            "description": project.property("description")
+            "name"       : project.name,
+            "mainPackage": mainPackage,
+            "version"    : project.version,
+            "apiVersion" : apiVersion,
+            "description": project.description,
+            "author"     : author,
+            "website"    : website
     ]
 }
 
 tasks.jar.enabled = false
 
 tasks.shadowJar {
-    archiveFileName = 'SignsPortals.jar'
+    archiveFileName = project.name + '.jar'
     minimize()
-    relocate 'net.leomixer17.pluginlib', 'net.leomixer17.signsportals'
-    relocate 'org.bstats.bukkit', 'net.leomixer17.signsportals.bstats'
+    relocate 'me.lucko.helper', mainPackage + ".helper"
+    relocate 'org.bstats.bukkit', mainPackage + '.bstats'
 }
 
 artifacts {

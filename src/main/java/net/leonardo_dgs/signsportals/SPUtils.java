@@ -1,4 +1,4 @@
-package net.leomixer17.signsportals;
+package net.leonardo_dgs.signsportals;
 
 import org.bukkit.Location;
 import org.bukkit.World;

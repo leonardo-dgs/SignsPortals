@@ -1,7 +1,8 @@
-name: SignsPortals
-main: net.leomixer17.signsportals.SignsPortals
+name: @name@
+main: @mainPackage@.@name@
 version: @version@
-api-version: 1.13
+api-version: @apiVersion@
 description: @description@
-author: Leomixer17
+author: @author@
+website: @website@
 depend: [Vault]

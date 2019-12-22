@@ -1,7 +1,7 @@
-package net.leomixer17.signsportals;
+package net.leonardo_dgs.signsportals;
 
-import net.leomixer17.pluginlib.util.Players;
-import net.leomixer17.signsportals.database.DatabaseManager;
+import me.lucko.helper.utils.Players;
+import net.leonardo_dgs.signsportals.database.DatabaseManager;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,27 +24,27 @@ public final class Listeners implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onSignChange(SignChangeEvent e)
     {
-        if (!e.getLine(0).equals(SignsPortals.getPlugin().getConfig().getString("portal_identifier")))
+        if (!e.getLine(0).equals(SignsPortals.getInstance().getConfig().getString("portal_identifier")))
             return;
         if (!e.getPlayer().hasPermission("signsportals.create"))
         {
             e.getPlayer().sendMessage(Messages.getMsg("no_permission_create"));
             return;
         }
-        if (SignsPortals.getPlugin().getConfig().getString("world_list_type").equalsIgnoreCase("blacklist"))
+        if (SignsPortals.getInstance().getConfig().getString("world_list_type").equalsIgnoreCase("blacklist"))
         {
-            if (SignsPortals.getPlugin().getConfig().getStringList("world_list").contains(e.getBlock().getWorld().getName()))
+            if (SignsPortals.getInstance().getConfig().getStringList("world_list").contains(e.getBlock().getWorld().getName()))
             {
                 e.getPlayer().sendMessage(Messages.getMsg("world_not_allowed"));
                 return;
             }
         }
-        else if (!SignsPortals.getPlugin().getConfig().getStringList("world_list").contains(e.getBlock().getWorld().getName()))
+        else if (!SignsPortals.getInstance().getConfig().getStringList("world_list").contains(e.getBlock().getWorld().getName()))
         {
             e.getPlayer().sendMessage(Messages.getMsg("world_not_allowed"));
             return;
         }
-        if (SignsPortals.getEconomy().getBalance(e.getPlayer()) < SignsPortals.getPlugin().getConfig().getInt("portal_cost"))
+        if (SignsPortals.getEconomy().getBalance(e.getPlayer()) < SignsPortals.getInstance().getConfig().getInt("portal_cost"))
         {
             e.getPlayer().sendMessage(Messages.getMsg("insufficient_funds"));
             return;
@@ -66,13 +66,13 @@ public final class Listeners implements Listener {
         }
         final SignPortal portal = new SignPortal(e.getBlock(), e.getPlayer(), e.getLine(1), e.getLine(2));
 
-        final String line1 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getPlugin().getConfig().getString("sign_lines.1"))
+        final String line1 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.1"))
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
-        final String line2 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getPlugin().getConfig().getString("sign_lines.2"))
+        final String line2 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.2"))
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
-        final String line3 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getPlugin().getConfig().getString("sign_lines.3"))
+        final String line3 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.3"))
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
-        final String line4 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getPlugin().getConfig().getString("sign_lines.4"))
+        final String line4 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.4"))
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
 
         e.setLine(0, line1);
@@ -81,7 +81,7 @@ public final class Listeners implements Listener {
         e.setLine(3, line4);
 
         portal.save();
-        final double cost = SignsPortals.getPlugin().getConfig().getDouble("portal_cost");
+        final double cost = SignsPortals.getInstance().getConfig().getDouble("portal_cost");
         SignsPortals.getEconomy().withdrawPlayer(e.getPlayer(), cost);
         e.getPlayer().sendMessage(Messages.getMsg("portal_created").replace("%money%", SignsPortals.getEconomy().format(cost)));
     }
@@ -100,7 +100,7 @@ public final class Listeners implements Listener {
     {
         if (!SignsPortals.isPortal(e.getBlock()))
             return;
-        Bukkit.getScheduler().runTask(SignsPortals.getPlugin(), new Runnable() {
+        Bukkit.getScheduler().runTask(SignsPortals.getInstance(), new Runnable() {
             @Override
             public void run()
             {

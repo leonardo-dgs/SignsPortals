@@ -1,4 +1,4 @@
-package net.leomixer17.signsportals;
+package net.leonardo_dgs.signsportals;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,7 +19,7 @@ public final class Messages {
 
     static void loadMessages()
     {
-        final File f = new File(SignsPortals.getPlugin().getDataFolder(), "messages.yml");
+        final File f = new File(SignsPortals.getInstance().getDataFolder(), "messages.yml");
         if (!f.exists())
             try
             {
@@ -29,7 +29,7 @@ public final class Messages {
             {
                 e.printStackTrace();
             }
-        messages = Config.loadDefaults(YamlConfiguration.loadConfiguration(f), YamlConfiguration.loadConfiguration(new InputStreamReader(SignsPortals.getPlugin().getResource("messages.yml"))));
+        messages = Config.loadDefaults(YamlConfiguration.loadConfiguration(f), YamlConfiguration.loadConfiguration(new InputStreamReader(SignsPortals.getInstance().getResource("messages.yml"))));
         try
         {
             messages.save(f);

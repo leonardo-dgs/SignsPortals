@@ -1,5 +1,8 @@
-package net.leomixer17.signsportals.database;
+package net.leonardo_dgs.signsportals.database;
 
+import lombok.Getter;
+
+@Getter
 public enum DatabaseType {
 
     H2("org.h2.Driver", "jdbc:h2:%database%"),
@@ -15,16 +18,6 @@ public enum DatabaseType {
     {
         this.driver = driver;
         this.urlFormat = urlFormat;
-    }
-
-    public String getDriver()
-    {
-        return this.driver;
-    }
-
-    public String getUrlFormat()
-    {
-        return this.urlFormat;
     }
 
 }
