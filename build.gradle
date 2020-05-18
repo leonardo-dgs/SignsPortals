@@ -14,12 +14,12 @@ String apiVersion = '1.13'
 String author = 'Leonardo_DGS'
 String website = 'https://www.spigotmc.org/resources/signsportals.55287/'
 
-String spigotVersion = '1.15.1-R0.1-SNAPSHOT'
+String spigotVersion = '1.15.2-R0.1-SNAPSHOT'
 String bungeeVersion = '1.15-SNAPSHOT'
 String vaultVersion = '1.7'
-String lombokVersion = '1.18.10'
+String lombokVersion = '1.18.12'
 String bStatsVersion = '1.5'
-String helperVersion = '5.6.0'
+String helperVersion = '5.6.2'
 
 tasks.compileJava.sourceCompatibility = 1.8
 tasks.compileJava.targetCompatibility = 1.8

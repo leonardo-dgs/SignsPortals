@@ -1,7 +1,7 @@
 package net.leonardo_dgs.signsportals;
 
-import me.lucko.helper.utils.Players;
 import net.leonardo_dgs.signsportals.database.DatabaseManager;
+import net.leonardo_dgs.signsportals.util.PlayerUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -165,7 +165,7 @@ public final class Listeners implements Listener {
         location.setYaw(e.getPlayer().getLocation().getYaw());
         location.setPitch(e.getPlayer().getLocation().getPitch());
         e.getPlayer().teleport(SPUtils.getRoundedLocation(location));
-        Players.sendActionBar(Messages.getMsg("teleport_success").replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination()), e.getPlayer());
+        PlayerUtil.sendActionBar(Messages.getMsg("teleport_success").replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination()), e.getPlayer());
     }
 
     private static boolean isEmptyOrWhitespaceOnly(String s)
