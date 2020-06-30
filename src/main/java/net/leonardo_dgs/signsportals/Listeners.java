@@ -1,6 +1,7 @@
 package net.leonardo_dgs.signsportals;
 
-import net.leonardo_dgs.signsportals.database.DatabaseManager;
+import co.aikar.idb.DB;
+import co.aikar.idb.DbRow;
 import net.leonardo_dgs.signsportals.util.PlayerUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -16,74 +17,73 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public final class Listeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onSignChange(SignChangeEvent e)
+    public void onSignChange(SignChangeEvent event)
     {
-        if (!e.getLine(0).equals(SignsPortals.getInstance().getConfig().getString("portal_identifier")))
+        if (!event.getLine(0).equals(SignsPortals.getInstance().getConfig().getString("portal_identifier")))
             return;
-        if (!e.getPlayer().hasPermission("signsportals.create"))
+        if (!event.getPlayer().hasPermission("signsportals.create"))
         {
-            e.getPlayer().sendMessage(Messages.getMsg("no_permission_create"));
+            event.getPlayer().sendMessage(Messages.getMsg("no_permission_create"));
             return;
         }
         if (SignsPortals.getInstance().getConfig().getString("world_list_type").equalsIgnoreCase("blacklist"))
         {
-            if (SignsPortals.getInstance().getConfig().getStringList("world_list").contains(e.getBlock().getWorld().getName()))
+            if (SignsPortals.getInstance().getConfig().getStringList("world_list").contains(event.getBlock().getWorld().getName()))
             {
-                e.getPlayer().sendMessage(Messages.getMsg("world_not_allowed"));
+                event.getPlayer().sendMessage(Messages.getMsg("world_not_allowed"));
                 return;
             }
         }
-        else if (!SignsPortals.getInstance().getConfig().getStringList("world_list").contains(e.getBlock().getWorld().getName()))
+        else if (!SignsPortals.getInstance().getConfig().getStringList("world_list").contains(event.getBlock().getWorld().getName()))
         {
-            e.getPlayer().sendMessage(Messages.getMsg("world_not_allowed"));
+            event.getPlayer().sendMessage(Messages.getMsg("world_not_allowed"));
             return;
         }
-        if (SignsPortals.getEconomy().getBalance(e.getPlayer()) < SignsPortals.getInstance().getConfig().getInt("portal_cost"))
+        if (SignsPortals.getEconomy().getBalance(event.getPlayer()) < SignsPortals.getInstance().getConfig().getInt("portal_cost"))
         {
-            e.getPlayer().sendMessage(Messages.getMsg("insufficient_funds"));
+            event.getPlayer().sendMessage(Messages.getMsg("insufficient_funds"));
             return;
         }
-        if (isEmptyOrWhitespaceOnly(e.getLine(1)) || isEmptyOrWhitespaceOnly(e.getLine(2)))
+        if (isEmptyOrWhitespaceOnly(event.getLine(1)) || isEmptyOrWhitespaceOnly(event.getLine(2)))
         {
-            e.getPlayer().sendMessage(Messages.getMsg("missing_lines"));
+            event.getPlayer().sendMessage(Messages.getMsg("missing_lines"));
             return;
         }
-        if (e.getLine(1).equals(e.getLine(2)))
+        if (event.getLine(1).equals(event.getLine(2)))
         {
-            e.getPlayer().sendMessage(Messages.getMsg("portal_and_destination_equal"));
+            event.getPlayer().sendMessage(Messages.getMsg("portal_and_destination_equal"));
             return;
         }
-        if (SignsPortals.getPortal(e.getPlayer(), e.getLine(1)) != null)
+        if (SignsPortals.getPortal(event.getPlayer(), event.getLine(1)) != null)
         {
-            e.getPlayer().sendMessage(Messages.getMsg("portal_already_exists").replace("%portal%", e.getLine(1)));
+            event.getPlayer().sendMessage(Messages.getMsg("portal_already_exists").replace("%portal%", event.getLine(1)));
             return;
         }
-        final SignPortal portal = new SignPortal(e.getBlock(), e.getPlayer(), e.getLine(1), e.getLine(2));
+        SignPortal portal = new SignPortal(event.getBlock(), event.getPlayer(), event.getLine(1), event.getLine(2));
 
-        final String line1 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.1"))
+        String line1 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.1"))
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
-        final String line2 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.2"))
+        String line2 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.2"))
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
-        final String line3 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.3"))
+        String line3 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.3"))
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
-        final String line4 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.4"))
+        String line4 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.4"))
                 .replace("%player_name%", portal.getOwner().getName()).replace("%portal%", portal.getName()).replace("%destination%", portal.getDestination());
 
-        e.setLine(0, line1);
-        e.setLine(1, line2);
-        e.setLine(2, line3);
-        e.setLine(3, line4);
+        event.setLine(0, line1);
+        event.setLine(1, line2);
+        event.setLine(2, line3);
+        event.setLine(3, line4);
 
         portal.save();
-        final double cost = SignsPortals.getInstance().getConfig().getDouble("portal_cost");
-        SignsPortals.getEconomy().withdrawPlayer(e.getPlayer(), cost);
-        e.getPlayer().sendMessage(Messages.getMsg("portal_created").replace("%money%", SignsPortals.getEconomy().format(cost)));
+        double cost = SignsPortals.getInstance().getConfig().getDouble("portal_cost");
+        SignsPortals.getEconomy().withdrawPlayer(event.getPlayer(), cost);
+        event.getPlayer().sendMessage(Messages.getMsg("portal_created").replace("%money%", SignsPortals.getEconomy().format(cost)));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -91,38 +91,34 @@ public final class Listeners implements Listener {
     {
         if (!SignsPortals.isPortal(e.getBlock()))
             return;
-        final SignPortal portal = SignsPortals.getPortal(e.getBlock());
+        SignPortal portal = SignsPortals.getPortal(e.getBlock());
         portal.delete();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockPhysics(BlockPhysicsEvent e)
+    public void onBlockPhysics(BlockPhysicsEvent event)
     {
-        if (!SignsPortals.isPortal(e.getBlock()))
+        if (!SignsPortals.isPortal(event.getBlock()))
             return;
-        Bukkit.getScheduler().runTask(SignsPortals.getInstance(), new Runnable() {
-            @Override
-            public void run()
+        Bukkit.getScheduler().runTask(SignsPortals.getInstance(), () ->
+        {
+            if (!(event.getBlock().getState() instanceof Sign))
             {
-                if (!(e.getBlock().getState() instanceof Sign))
-                {
-                    final SignPortal portal = SignsPortals.getPortal(e.getBlock());
-                    portal.delete();
-                }
+                SignPortal portal = SignsPortals.getPortal(event.getBlock());
+                portal.delete();
             }
         });
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event)
     {
-        final ResultSet rs = SignsPortals.getDatabaseManager().query(DatabaseManager.GET_PLAYER_USERNAME_FROM_UUID, event.getPlayer().getUniqueId().toString());
         try
         {
-            if (rs.next())
-                if (!event.getPlayer().getName().equals(rs.getString(1)))
-                    SignsPortals.getDatabaseManager().update(DatabaseManager.UPDATE_PLAYER_USERNAME, event.getPlayer().getName(), SignsPortals.getPlayerId(event.getPlayer().getUniqueId()));
-            rs.close();
+            DbRow result = DB.getFirstRow(DatabaseQueries.GET_PLAYER_USERNAME_FROM_UUID, event.getPlayer().getUniqueId().toString());
+            if (result != null)
+                if (!event.getPlayer().getName().equals(result.getString("username")))
+                    DB.executeUpdate(DatabaseQueries.UPDATE_PLAYER_USERNAME, event.getPlayer().getName(), SignsPortals.getPlayerId(event.getPlayer().getUniqueId()));
         }
         catch (SQLException e)
         {
@@ -138,7 +134,7 @@ public final class Listeners implements Listener {
             return;
         if (!SignsPortals.isPortal(e.getClickedBlock()))
             return;
-        final SignPortal portal = SignsPortals.getPortal(e.getClickedBlock());
+        SignPortal portal = SignsPortals.getPortal(e.getClickedBlock());
         if (portal.getOwner().equals(e.getPlayer()))
         {
             if (!e.getPlayer().hasPermission("signsportals.use"))
@@ -155,13 +151,13 @@ public final class Listeners implements Listener {
                 return;
             }
         }
-        final SignPortal destPortal = SignsPortals.getPortal(portal.getOwner(), portal.getDestination());
+        SignPortal destPortal = SignsPortals.getPortal(portal.getOwner(), portal.getDestination());
         if (destPortal == null)
         {
             e.getPlayer().sendMessage(Messages.getMsg("destination_not_exists"));
             return;
         }
-        final Location location = destPortal.getBlock().getLocation();
+        Location location = destPortal.getBlock().getLocation();
         location.setYaw(e.getPlayer().getLocation().getYaw());
         location.setPitch(e.getPlayer().getLocation().getPitch());
         e.getPlayer().teleport(SPUtils.getRoundedLocation(location));

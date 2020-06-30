@@ -1,6 +1,7 @@
 package net.leonardo_dgs.signsportals;
 
-import net.leonardo_dgs.signsportals.database.DatabaseManager;
+import co.aikar.idb.DB;
+import lombok.SneakyThrows;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -61,23 +62,26 @@ public class SignPortal {
         this.owner = owner;
     }
 
+    @SneakyThrows
     public void save()
     {
-        SignsPortals.getDatabaseManager().update(DatabaseManager.INSERT_PORTAL, SPUtils.serializeLocation(this.getBlock().getLocation()),
-                SignsPortals.getPlayerId(this.getOwner().getUniqueId()), this.getName(), this.getDestination());
+        DB.executeUpdate(DatabaseQueries.INSERT_PORTAL,
+                SPUtils.serializeLocation(this.getBlock().getLocation()),
+                SignsPortals.getPlayerId(this.getOwner().getUniqueId()),
+                this.getName(), this.getDestination());
     }
 
     public void update()
     {
-        final String line1 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.1"))
+        String line1 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.1"))
                 .replace("%player_name%", this.getOwner().getName()).replace("%portal%", this.getName()).replace("%destination%", this.getDestination());
-        final String line2 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.2"))
+        String line2 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.2"))
                 .replace("%player_name%", this.getOwner().getName()).replace("%portal%", this.getName()).replace("%destination%", this.getDestination());
-        final String line3 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.3"))
+        String line3 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.3"))
                 .replace("%player_name%", this.getOwner().getName()).replace("%portal%", this.getName()).replace("%destination%", this.getDestination());
-        final String line4 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.4"))
+        String line4 = ChatColor.translateAlternateColorCodes('&', SignsPortals.getInstance().getConfig().getString("sign_lines.4"))
                 .replace("%player_name%", this.getOwner().getName()).replace("%portal%", this.getName()).replace("%destination%", this.getDestination());
-        final Sign sign = (Sign) this.getBlock().getState();
+        Sign sign = (Sign) this.getBlock().getState();
         sign.setLine(0, line1);
         sign.setLine(1, line2);
         sign.setLine(2, line3);
@@ -85,12 +89,13 @@ public class SignPortal {
         sign.update();
     }
 
+    @SneakyThrows
     public void delete()
     {
-        SignsPortals.getDatabaseManager().update(DatabaseManager.DELETE_PORTAL, SPUtils.serializeLocation(this.getBlock().getLocation()));
+        DB.executeUpdate(DatabaseQueries.DELETE_PORTAL, SPUtils.serializeLocation(this.getBlock().getLocation()));
         if (this.getOwner() != null)
         {
-            final double refund = SignsPortals.getInstance().getConfig().getDouble("portal_refund");
+            double refund = SignsPortals.getInstance().getConfig().getDouble("portal_refund");
             SignsPortals.getEconomy().depositPlayer(this.getOwner(), refund);
             if (this.getOwner().isOnline())
                 this.getOwner().getPlayer().sendMessage(Messages.getMsg("portal_broken").replace("%money%", SignsPortals.getEconomy().format(refund))
