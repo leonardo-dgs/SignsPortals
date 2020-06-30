@@ -41,7 +41,7 @@ public final class PlayerUtil {
     public static void sendActionBar(String text, Player... players) {
         if(ACTIONBAR_NATIVE_SUPPORT) {
             for (Player player : players)
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(text));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(text));
         }
         else {
             text = text.replace("\\", "\\\\").replace("\"", "\\\"");
