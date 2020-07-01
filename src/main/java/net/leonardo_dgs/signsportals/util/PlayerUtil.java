@@ -1,6 +1,5 @@
 package net.leonardo_dgs.signsportals.util;
 
-import me.lucko.helper.reflect.ServerReflection;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -21,9 +20,9 @@ public final class PlayerUtil {
         Constructor<?> actionbarConstructor = null;
         if(!ACTIONBAR_NATIVE_SUPPORT) {
             try {
-                Class<?> iChatBaseComponentClass = ServerReflection.nmsClass("IChatBaseComponent");
+                Class<?> iChatBaseComponentClass = ReflectionUtil.nmsClass("IChatBaseComponent");
                 iChatBaseComponentAMethod = iChatBaseComponentClass.getDeclaredClasses()[0].getMethod("a", String.class);
-                actionbarConstructor = ServerReflection.nmsClass("PacketPlayOutChat").getConstructor(iChatBaseComponentClass, byte.class);
+                actionbarConstructor = ReflectionUtil.nmsClass("PacketPlayOutChat").getConstructor(iChatBaseComponentClass, byte.class);
             } catch (NoSuchMethodException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

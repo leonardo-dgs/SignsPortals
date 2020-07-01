@@ -22,7 +22,6 @@ String bStatsVersion = '1.5'
 String idbVersion = '1.0.0-SNAPSHOT'
 String hikariVersion = '3.4.5'
 String slf4jVersion = '1.7.30'
-String helperVersion = '5.6.2'
 
 tasks.compileJava.sourceCompatibility = 1.8
 tasks.compileJava.targetCompatibility = 1.8
@@ -48,7 +47,6 @@ dependencies {
     implementation 'com.zaxxer:HikariCP:' + hikariVersion
     implementation 'org.slf4j:slf4j-api:' + slf4jVersion
     implementation 'org.slf4j:slf4j-nop:' + slf4jVersion
-    implementation 'me.lucko:helper:' + helperVersion
 }
 
 tasks.processResources {
@@ -69,7 +67,6 @@ tasks.shadowJar {
     archiveFileName = project.name + '.jar'
     minimize()
     relocate 'org.bstats.bukkit', mainPackage + '.bstats'
-    relocate 'me.lucko.helper', mainPackage + '.helper'
     relocate 'co.aikar.idb', mainPackage + '.idb'
     relocate 'com.zaxxer.hikari', mainPackage + '.hikari'
     relocate 'org.slf4j', mainPackage + '.slf4j'
