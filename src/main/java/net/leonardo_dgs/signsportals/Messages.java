@@ -12,30 +12,22 @@ public final class Messages {
 
     private static FileConfiguration messages;
 
-    static String getMsg(String key)
-    {
+    static String getMsg(String key) {
         return (!key.equals("prefix") ? getMsg("prefix") : "") + ChatColor.translateAlternateColorCodes('&', messages.getString(key));
     }
 
-    static void loadMessages()
-    {
+    static void loadMessages() {
         final File f = new File(SignsPortals.getInstance().getDataFolder(), "messages.yml");
         if (!f.exists())
-            try
-            {
+            try {
                 f.createNewFile();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         messages = Config.loadDefaults(YamlConfiguration.loadConfiguration(f), YamlConfiguration.loadConfiguration(new InputStreamReader(SignsPortals.getInstance().getResource("messages.yml"))));
-        try
-        {
+        try {
             messages.save(f);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

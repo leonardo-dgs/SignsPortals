@@ -18,7 +18,7 @@ public final class PlayerUtil {
     static {
         Method iChatBaseComponentAMethod = null;
         Constructor<?> actionbarConstructor = null;
-        if(!ACTIONBAR_NATIVE_SUPPORT) {
+        if (!ACTIONBAR_NATIVE_SUPPORT) {
             try {
                 Class<?> iChatBaseComponentClass = ReflectionUtil.nmsClass("IChatBaseComponent");
                 iChatBaseComponentAMethod = iChatBaseComponentClass.getDeclaredClasses()[0].getMethod("a", String.class);
@@ -34,15 +34,14 @@ public final class PlayerUtil {
     /**
      * Sends an action bar to a set of players.
      *
-     * @param text the action bar text
+     * @param text    the action bar text
      * @param players the players to whom send the action bar
      */
     public static void sendActionBar(String text, Player... players) {
-        if(ACTIONBAR_NATIVE_SUPPORT) {
+        if (ACTIONBAR_NATIVE_SUPPORT) {
             for (Player player : players)
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(text));
-        }
-        else {
+        } else {
             text = text.replace("\\", "\\\\").replace("\"", "\\\"");
             try {
                 for (Player player : players) {

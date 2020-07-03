@@ -55,11 +55,9 @@ final class DatabaseQueries {
             format("SELECT `location`, `name`, `destination` FROM `%sportals` WHERE `owner` = ?", TABLE_PREFIX);
 
     @SneakyThrows
-    static void createSchema(String databaseType)
-    {
+    static void createSchema(String databaseType) {
         DB.executeUpdate(CREATE_PORTALS_TABLE);
-        switch (databaseType)
-        {
+        switch (databaseType) {
             default:
             case "SQLITE":
                 DB.executeUpdate(SQLITE_CREATE_PLAYERS_TABLE);

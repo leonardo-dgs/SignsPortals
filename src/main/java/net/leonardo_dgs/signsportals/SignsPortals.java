@@ -35,11 +35,9 @@ public final class SignsPortals extends JavaPlugin {
     private static Economy economy;
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         instance = this;
-        if (!this.setupEconomy())
-        {
+        if (!this.setupEconomy()) {
             this.getLogger().log(Level.SEVERE, "§cThis plugin requires a Vault economy plugin. Disabling...");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -51,28 +49,24 @@ public final class SignsPortals extends JavaPlugin {
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         DB.close();
     }
 
-    private boolean setupEconomy()
-    {
+    private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null)
             economy = economyProvider.getProvider();
         return (economy != null);
     }
 
-    private void setupDatabase()
-    {
+    private void setupDatabase() {
         DatabaseOptions.DatabaseOptionsBuilder optionsBuilder = DatabaseOptions.builder().poolName(getDescription().getName() + " DB").logger(getLogger());
 
         String databaseType = getConfig().getString("database.backend").toUpperCase();
         Map<String, Object> properties = new HashMap<>();
         String databaseName = this.getConfig().getString("database.database_name");
-        switch (databaseType)
-        {
+        switch (databaseType) {
             default:
             case "SQLITE":
                 optionsBuilder.sqlite(getDataFolder().getAbsolutePath() + File.separator + databaseName + ".db");
@@ -93,31 +87,25 @@ public final class SignsPortals extends JavaPlugin {
         DatabaseQueries.createSchema(databaseType);
     }
 
-    public static SignPortal getPortal(Block block)
-    {
-        try
-        {
+    public static SignPortal getPortal(Block block) {
+        try {
             DbRow result = DB.getFirstRow(DatabaseQueries.GET_PORTAL_FROM_BLOCK, SPUtils.serializeLocation(block.getLocation()));
-            if(result == null)
+            if (result == null)
                 return null;
             OfflinePlayer owner = getPlayer(result.getInt("owner"));
             String name = result.getString("name");
             String destName = result.getString("destination");
             return new SignPortal(block, owner, name, destName);
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static SignPortal getPortal(OfflinePlayer owner, String name)
-    {
-        try
-        {
+    public static SignPortal getPortal(OfflinePlayer owner, String name) {
+        try {
             DbRow result = DB.getFirstRow(DatabaseQueries.GET_PORTAL_FROM_OWNER_AND_NAME, getPlayerId(owner), name);
-            if(result == null)
+            if (result == null)
                 return null;
             Location location = SPUtils.deserializeLocation(result.getString("location"));
             String destName = result.getString("destination");
@@ -126,19 +114,15 @@ public final class SignsPortals extends JavaPlugin {
                 return portal;
             else
                 portal.delete();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static Set<SignPortal> getPortals(OfflinePlayer player)
-    {
+    public static Set<SignPortal> getPortals(OfflinePlayer player) {
         Set<SignPortal> portals = new HashSet<>();
-        try
-        {
+        try {
             List<DbRow> results = DB.getResults(DatabaseQueries.GET_PLAYER_PORTALS, getPlayerId(player));
             results.forEach(result ->
             {
@@ -151,140 +135,105 @@ public final class SignsPortals extends JavaPlugin {
                 else
                     portal.delete();
             });
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return portals;
     }
 
-    public static boolean isPortal(Block block)
-    {
+    public static boolean isPortal(Block block) {
         if (block.getState() instanceof Sign)
             return getPortal(block) != null;
         else
             return false;
     }
 
-    public static int getWorldId(UUID uid)
-    {
+    public static int getWorldId(UUID uid) {
         int id = 0;
-        try
-        {
+        try {
             DbRow result = DB.getFirstRow(DatabaseQueries.GET_WORLD_ID_FROM_UID, uid.toString());
 
-            if(result == null)
-            {
+            if (result == null) {
                 DB.executeUpdate(DatabaseQueries.INSERT_WORLD, uid.toString());
                 id = SignsPortals.getWorldId(uid);
-            }
-            else
-            {
+            } else {
                 id = result.getInt("id");
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return id;
     }
 
-    public static int getPlayerId(OfflinePlayer player)
-    {
+    public static int getPlayerId(OfflinePlayer player) {
         return getPlayerId(player.getUniqueId());
     }
 
-    public static int getPlayerId(UUID uuid)
-    {
+    public static int getPlayerId(UUID uuid) {
         int id = 0;
-        try
-        {
+        try {
             DbRow result = DB.getFirstRow(DatabaseQueries.GET_PLAYER_ID_FROM_UUID, uuid.toString());
-            if(result == null)
-            {
+            if (result == null) {
                 DB.executeUpdate(DatabaseQueries.INSERT_PLAYER, Bukkit.getOfflinePlayer(uuid).getName(), uuid.toString());
                 id = SignsPortals.getPlayerId(uuid);
-            }
-            else
-            {
+            } else {
                 id = result.getInt("id");
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return id;
     }
 
-    public static int getPlayerId(String username)
-    {
+    public static int getPlayerId(String username) {
         int id = 0;
-        try
-        {
+        try {
             DbRow result = DB.getFirstRow(DatabaseQueries.GET_PLAYER_ID_FROM_USERNAME, username);
-            if(result != null)
+            if (result != null)
                 id = result.getInt("id");
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return id;
     }
 
-    public static World getWorld(int id)
-    {
+    public static World getWorld(int id) {
         UUID uid = null;
-        try
-        {
+        try {
             DbRow result = DB.getFirstRow(DatabaseQueries.GET_WORLD_UID, id);
-            if(result != null)
+            if (result != null)
                 uid = UUID.fromString(result.getString("world_uid"));
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return uid == null ? null : Bukkit.getWorld(uid);
     }
 
-    public static UUID getPlayerUUID(int id)
-    {
+    public static UUID getPlayerUUID(int id) {
         UUID uuid = null;
-        try
-        {
+        try {
             DbRow result = DB.getFirstRow(DatabaseQueries.GET_PLAYER_UUID, id);
             if (result != null)
                 uuid = UUID.fromString(result.getString("uuid"));
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return uuid;
     }
 
-    public static String getPlayerName(int id)
-    {
+    public static String getPlayerName(int id) {
         String username = null;
-        try
-        {
+        try {
             DbRow result = DB.getFirstRow(DatabaseQueries.GET_PLAYER_USERNAME, id);
             if (result != null)
                 username = result.getString("username");
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return username;
     }
 
-    public static OfflinePlayer getPlayer(int id)
-    {
+    public static OfflinePlayer getPlayer(int id) {
         final UUID uuid = getPlayerUUID(id);
         return uuid == null ? null : Bukkit.getOfflinePlayer(uuid);
     }
