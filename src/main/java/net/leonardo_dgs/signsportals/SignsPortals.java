@@ -5,6 +5,11 @@ import co.aikar.idb.Database;
 import co.aikar.idb.DatabaseOptions;
 import co.aikar.idb.DbRow;
 import co.aikar.idb.PooledDatabaseOptions;
+import de.leonhard.storage.LightningBuilder;
+import de.leonhard.storage.Yaml;
+import de.leonhard.storage.internal.settings.ConfigSettings;
+import de.leonhard.storage.internal.settings.DataType;
+import de.leonhard.storage.internal.settings.ReloadSettings;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.MetricsLite;
@@ -42,7 +47,7 @@ public final class SignsPortals extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        Config.loadAll();
+        setupConfig();
         this.setupDatabase();
         Bukkit.getPluginManager().registerEvents(new Listeners(), this);
         new MetricsLite(this);
@@ -57,7 +62,23 @@ public final class SignsPortals extends JavaPlugin {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null)
             economy = economyProvider.getProvider();
-        return (economy != null);
+        return economy != null;
+    }
+
+    private void setupConfig() {
+        Yaml yamlConfig = LightningBuilder
+                .fromPath("test.yml", getDataFolder().getPath())
+                .setDataType(DataType.SORTED)
+                .setConfigSettings(ConfigSettings.PRESERVE_COMMENTS)
+                .setReloadSettings(ReloadSettings.MANUALLY)
+                .createConfig();
+
+
+        yamlConfig.setHeader("asdasd", "abbbb");
+        yamlConfig.setPathPrefix("taaaa");
+        yamlConfig.setDefault("b", "asdsadads");
+        yamlConfig.setDefault("a", 32);
+        yamlConfig.setDefault("c.a", "tetetetesst");
     }
 
     private void setupDatabase() {

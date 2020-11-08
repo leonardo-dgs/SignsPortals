@@ -14,11 +14,12 @@ String apiVersion = '1.13'
 String author = 'Leonardo_DGS'
 String website = 'https://www.spigotmc.org/resources/55287/'
 
-String spigotVersion = '1.16.1-R0.1-SNAPSHOT'
+String spigotVersion = '1.16.4-R0.1-SNAPSHOT'
 String bungeeVersion = '1.16-R0.1'
 String vaultVersion = '1.7'
 String lombokVersion = '1.18.12'
 String bStatsVersion = '1.5'
+String lightningStorageVersion = '3.1.6'
 String idbVersion = '1.0.0-SNAPSHOT'
 String hikariVersion = '3.4.5'
 String slf4jVersion = '1.7.30'
@@ -33,7 +34,7 @@ repositories {
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://repo.codemc.org/repository/maven-public/' }
     maven { url = "https://repo.aikar.co/content/groups/aikar/" }
-    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://jitpack.io/' }
 }
 
 dependencies {
@@ -43,6 +44,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:' + lombokVersion
     annotationProcessor 'org.projectlombok:lombok:' + lombokVersion
     implementation 'org.bstats:bstats-bukkit-lite:' + bStatsVersion
+    implementation 'com.github.JavaFactoryDev:LightningStorage:' + lightningStorageVersion
     implementation 'co.aikar:idb-core:' + idbVersion
     implementation 'com.zaxxer:HikariCP:' + hikariVersion
     implementation 'org.slf4j:slf4j-api:' + slf4jVersion
@@ -67,6 +69,7 @@ tasks.shadowJar {
     archiveFileName = project.name + '.jar'
     minimize()
     relocate 'org.bstats.bukkit', mainPackage + '.bstats'
+    relocate 'de.leonhard.storage', mainPackage + '.config'
     relocate 'co.aikar.idb', mainPackage + '.idb'
     relocate 'com.zaxxer.hikari', mainPackage + '.hikari'
     relocate 'org.slf4j', mainPackage + '.slf4j'
