@@ -1,8 +1,8 @@
-name: @name@
-main: @mainPackage@.@name@
-version: @version@
-api-version: @apiVersion@
-description: @description@
-author: @author@
-website: @website@
+name: SignsPortals
+main: net.leonardo_dgs.signsportals.SignsPortals
+version: ${version}
+api-version: 1.13
+description: ${description}
+author: ${author}
+website: ${website}
 depend: [Vault]

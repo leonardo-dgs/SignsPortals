@@ -1,10 +1,6 @@
 package net.leonardo_dgs.signsportals;
 
-import co.aikar.idb.DB;
-import co.aikar.idb.Database;
-import co.aikar.idb.DatabaseOptions;
-import co.aikar.idb.DbRow;
-import co.aikar.idb.PooledDatabaseOptions;
+import co.aikar.idb.*;
 import de.leonhard.storage.LightningBuilder;
 import de.leonhard.storage.Yaml;
 import de.leonhard.storage.internal.settings.ConfigSettings;
@@ -12,7 +8,7 @@ import de.leonhard.storage.internal.settings.DataType;
 import de.leonhard.storage.internal.settings.ReloadSettings;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
-import org.bstats.bukkit.MetricsLite;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -24,12 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 public final class SignsPortals extends JavaPlugin {
@@ -50,7 +41,7 @@ public final class SignsPortals extends JavaPlugin {
         setupConfig();
         this.setupDatabase();
         Bukkit.getPluginManager().registerEvents(new Listeners(), this);
-        new MetricsLite(this);
+        new Metrics(this, 5489);
     }
 
     @Override

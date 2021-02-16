@@ -1,31 +1,15 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '6.0.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 group = 'net.leonardo_dgs'
 version = '1.1.5'
 description = 'Let users create their own portals with signs!'
 
-String mainPackage = project.group + '.' + project.name.toLowerCase()
-String apiVersion = '1.13'
-String author = 'Leonardo_DGS'
-String website = 'https://www.spigotmc.org/resources/55287/'
+def mainPackage = 'net.leonardo_dgs.signsportals'
 
-String spigotVersion = '1.16.4-R0.1-SNAPSHOT'
-String bungeeVersion = '1.16-R0.1'
-String vaultVersion = '1.7'
-String lombokVersion = '1.18.12'
-String bStatsVersion = '1.5'
-String lightningStorageVersion = '3.1.6'
-String idbVersion = '1.0.0-SNAPSHOT'
-String hikariVersion = '3.4.5'
-String slf4jVersion = '1.7.30'
-
-tasks.compileJava.sourceCompatibility = 1.8
-tasks.compileJava.targetCompatibility = 1.8
+tasks.compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
 tasks.compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -38,36 +22,36 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:' + spigotVersion
-    compileOnly 'net.md-5:bungeecord-chat:' + bungeeVersion
-    compileOnly 'com.github.MilkBowl:VaultAPI:' + vaultVersion
-    compileOnly 'org.projectlombok:lombok:' + lombokVersion
-    annotationProcessor 'org.projectlombok:lombok:' + lombokVersion
-    implementation 'org.bstats:bstats-bukkit-lite:' + bStatsVersion
-    implementation 'com.github.JavaFactoryDev:LightningStorage:' + lightningStorageVersion
-    implementation 'co.aikar:idb-core:' + idbVersion
-    implementation 'com.zaxxer:HikariCP:' + hikariVersion
-    implementation 'org.slf4j:slf4j-api:' + slf4jVersion
-    implementation 'org.slf4j:slf4j-nop:' + slf4jVersion
+    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'net.md-5:bungeecord-chat:1.16-R0.4'
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly 'org.projectlombok:lombok:1.18.18'
+    annotationProcessor 'org.projectlombok:lombok:1.18.18'
+    implementation 'org.bstats:bstats-bukkit:2.2.1'
+    implementation 'com.github.simplix-softworks:SimplixStorage:3.2.1'
+    implementation 'co.aikar:idb-core:1.0.0-SNAPSHOT'
+    implementation 'com.zaxxer:HikariCP:4.0.2'
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.slf4j:slf4j-nop:1.7.30'
 }
 
-tasks.processResources {
-    filter ReplaceTokens, tokens: [
-            "name"       : project.name,
-            "mainPackage": mainPackage,
-            "version"    : project.version,
-            "apiVersion" : apiVersion,
-            "description": project.description,
-            "author"     : author,
-            "website"    : website
-    ]
+processResources {
+    expand(
+            version: project.version,
+            description: project.description,
+            author: 'Leonardo_DGS',
+            website: 'https://www.spigotmc.org/resources/55287/'
+    )
 }
 
 tasks.jar.enabled = false
 
 tasks.shadowJar {
-    archiveFileName = project.name + '.jar'
+    archiveBaseName.set(project.name)
+    archiveClassifier.set("")
+    archiveVersion.set("")
     minimize()
+
     relocate 'org.bstats.bukkit', mainPackage + '.bstats'
     relocate 'de.leonhard.storage', mainPackage + '.config'
     relocate 'co.aikar.idb', mainPackage + '.idb'
@@ -77,8 +61,4 @@ tasks.shadowJar {
 
 artifacts {
     archives shadowJar
-}
-
-configurations.all {
-    transitive = false
 }
